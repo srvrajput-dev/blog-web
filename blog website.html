@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SR — Developer Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e12;
+  --surface: #14171d;
+  --surface2: #1b1f27;
+  --text: #f3f4f6;
+  --muted: #969da9;
+  --accent: #a3e635;
+  --border: #292e37;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.6;
+}
+a { text-decoration: none; color: inherit; }
+.container { width: min(1120px, 90%); margin: auto; }
+nav {
+  height: 76px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.logo { font: 700 25px 'Space Grotesk'; letter-spacing: -1.5px; }
+.logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 30px; align-items: center; }
+.nav-links a { color: var(--muted); font-size: 14px; transition: .2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-btn {
+  border: 1px solid var(--border); padding: 9px 17px;
+  border-radius: 8px; color: var(--text) !important;
+}
+.menu { display: none; background: none; border: 0; color: white; font-size: 25px; }
+.hero { padding: 100px 0 80px; }
+.eyebrow {
+  color: var(--accent); font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.hero h1 {
+  font: 600 clamp(44px, 7vw, 82px)/1.1 'Space Grotesk';
+  letter-spacing: -4px; max-width: 850px; margin: 22px 0;
+}
+.hero h1 span { color: var(--accent); }
+.hero p { max-width: 560px; color: var(--muted); font-size: 17px; }
+.hero-actions { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+.btn {
+  display: inline-block; padding: 12px 20px; border-radius: 8px;
+  font-size: 14px; font-weight: 600; transition: .2s;
+}
+.btn-primary { background: var(--accent); color: #10140a; }
+.btn-primary:hover { background: #bef264; transform: translateY(-2px); }
+.btn-outline { border: 1px solid var(--border); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.stats {
+  display: flex; gap: 60px; margin-top: 65px; padding-top: 30px;
+  border-top: 1px solid var(--border); flex-wrap: wrap;
+}
+.stat strong { display: block; font: 600 25px 'Space Grotesk'; }
+.stat small { color: var(--muted); font-size: 12px; }
+.section { padding: 65px 0; }
+.section-head {
+  display: flex; justify-content: space-between; align-items: end;
+  margin-bottom: 30px; gap: 20px;
+}
+.section-head h2 { font: 600 32px 'Space Grotesk'; letter-spacing: -1px; }
+.section-head p { color: var(--muted); font-size: 13px; }
+.text-link { color: var(--accent); font-size: 13px; font-weight: 600; }
+.featured {
+  display: grid; grid-template-columns: 1.15fr 1fr;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 15px; overflow: hidden;
+}
+.feature-image {
+  min-height: 350px;
+  background: linear-gradient(135deg, #263b37, #151b27 55%, #38402b);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.feature-image::before {
+  content: ""; position: absolute; width: 250px; height: 250px;
+  border: 1px solid #a3e63555; border-radius: 50%;
+  box-shadow: 0 0 0 40px #a3e6350c, 0 0 0 80px #a3e63509;
+}
+.feature-art {
+  font: 700 100px 'Space Grotesk'; color: var(--accent);
+  text-shadow: 0 0 50px #a3e63544; z-index: 1;
+}
+.feature-content { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+.tag {
+  display: inline-block; color: var(--accent); background: #a3e63512;
+  border: 1px solid #a3e63530; padding: 5px 10px; border-radius: 5px;
+  font-size: 11px; font-weight: 600; width: fit-content;
+}
+.feature-content h3 {
+  font: 600 30px/1.25 'Space Grotesk'; letter-spacing: -1px; margin: 17px 0;
+}
+.feature-content p { color: var(--muted); font-size: 14px; }
+.meta { color: var(--muted); font-size: 12px; margin-top: 22px; }
+.articles {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.article {
+  border: 1px solid var(--border); border-radius: 12px;
+  background: var(--surface); overflow: hidden; transition: .25s;
+}
+.article:hover { transform: translateY(-5px); border-color: #a3e63570; }
+.article-cover {
+  height: 170px; display: grid; place-items: center;
+  font: 600 44px 'Space Grotesk'; position: relative; overflow: hidden;
+}
+.cover1 { background: linear-gradient(135deg,#1b3040,#243c4c); color: #80d6ed; }
+.cover2 { background: linear-gradient(135deg,#352c43,#523c5b); color: #d8a9f3; }
+.cover3 { background: linear-gradient(135deg,#3a3422,#55502e); color: #e5d18b; }
+.cover4 { background: linear-gradient(135deg,#243c30,#1e5143); color: #80e4ad; }
+.cover5 { background: linear-gradient(135deg,#3b2d2b,#653d39); color: #f5aa8f; }
+.cover6 { background: linear-gradient(135deg,#252c42,#3a4670); color: #a8b9ff; }
+.article-body { padding: 22px; }
+.article-body h3 { font: 600 19px/1.35 'Space Grotesk'; margin: 12px 0 8px; }
+.article-body p { font-size: 13px; color: var(--muted); }
+.article-meta { display: flex; justify-content: space-between; margin-top: 20px; color: var(--muted); font-size: 11px; }
+.filters { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 25px; }
+.filter {
+  padding: 8px 15px; border-radius: 20px; border: 1px solid var(--border);
+  background: transparent; color: var(--muted); cursor: pointer; font: inherit;
+  font-size: 12px;
+}
+.filter.active, .filter:hover { color: #111; background: var(--accent); border-color: var(--accent); }
+.about {
+  display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px;
+  align-items: center; border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border); padding: 75px 0;
+}
+.avatar {
+  width: 100%; aspect-ratio: 1; max-width: 320px; border-radius: 15px;
+  background: radial-gradient(circle at 50% 35%, #4c6341, #222a29 55%, #171a20);
+  display: grid; place-items: center; font: 700 90px 'Space Grotesk';
+  color: var(--accent); border: 1px solid var(--border);
+}
+.about h2 { font: 600 34px 'Space Grotesk'; margin: 12px 0; }
+.about p { color: var(--muted); margin-bottom: 16px; font-size: 14px; }
+.skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.skill { padding: 7px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; }
+.contact {
+  text-align: center; padding: 90px 0;
+  background: radial-gradient(ellipse at center bottom, #a3e6350c, transparent 65%);
+}
+.contact h2 { font: 600 clamp(34px,5vw,55px) 'Space Grotesk'; letter-spacing: -2px; margin: 14px 0; }
+.contact p { color: var(--muted); margin-bottom: 25px; }
+footer {
+  border-top: 1px solid var(--border); padding: 25px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  color: var(--muted); font-size: 12px; gap: 15px; flex-wrap: wrap;
+}
+footer a:hover { color: var(--accent); }
+.socials { display: flex; gap: 20px; }
+.empty { display: none; color: var(--muted); padding: 25px 0; }
+@media(max-width:800px) {
+  .nav-links { display: none; position: absolute; top: 76px; left: 0; right: 0; padding: 20px 5%; background: var(--surface); flex-direction: column; align-items: start; z-index: 5; border-bottom: 1px solid var(--border); }
+  .nav-links.open { display: flex; }
+  .menu { display: block; }
+  .hero { padding: 70px 0 50px; }
+  .hero h1 { letter-spacing: -2px; }
+  .featured { grid-template-columns: 1fr; }
+  .feature-image { min-height: 230px; }
+  .articles { grid-template-columns: repeat(2,1fr); }
+  .about { grid-template-columns: 1fr; gap: 30px; }
+  .avatar { max-width: 220px; }
+}
+@media(max-width:550px) {
+  .articles { grid-template-columns: 1fr; }
+  .section-head { align-items: start; flex-direction: column; }
+  .feature-content { padding: 25px; }
+  .feature-content h3 { font-size: 25px; }
+  .stats { gap: 25px; }
+}
+</style>
+</head>
+<body>
+<header class="container">
+  <nav>
+    <a class="logo" href="#">Saurav RAJPUT<span>.</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#articles">Articles</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="nav-btn">Let's connect ↗</a>
+    </div>
+    <button class="menu" id="menuBtn" aria-label="Toggle menu">☰</button>
+  </nav>
+</header>
+
+<main>
+<section class="container hero" id="home">
+  <div class="eyebrow">✳ Developer · Learner · Creator</div>
+  <h1>Building things.<br>Sharing <span>ideas.</span></h1>
+  <p>Welcome to my digital space. I write about software development, technology, lessons from building projects, and everything I'm learning along the way.</p>
+  <div class="hero-actions">
+    <a href="#articles" class="btn btn-primary">Explore my writing ↗</a>
+    <a href="#about" class="btn btn-outline">More about me</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><strong>01+</strong><small>Years of learning</small></div>
+    <div class="stat"><strong>06</strong><small>Topics I explore</small></div>
+    <div class="stat"><strong>∞</strong><small>Ideas to build</small></div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <div><div class="eyebrow">Editor's pick</div><h2>Featured story</h2></div>
+    <p>Ideas worth exploring.</p>
+  </div>
+  <article class="featured">
+    <div class="feature-image"><div class="feature-art">&lt;/&gt;</div></div>
+    <div class="feature-content">
+      <span class="tag">DEVELOPMENT</span>
+      <h3>My journey into backend development with FastAPI</h3>
+      <p>From writing my first lines of Python to building APIs. Here's what I'm learning about backend development, project structure, and solving real problems.</p>
+      <div class="meta">October 01, 2026 · 5 min read</div>
+      <a href="#articles" class="text-link" style="margin-top:20px">Explore articles ↗</a>
+    </div>
+  </article>
+</section>
+
+<section class="container section" id="articles">
+  <div class="section-head">
+    <div><div class="eyebrow">The journal</div><h2>Latest articles</h2></div>
+    <p>Notes from my learning journey.</p>
+  </div>
+  <div class="filters" id="filters">
+    <button class="filter active" data-category="all">All posts</button>
+    <button class="filter" data-category="development">Development</button>
+    <button class="filter" data-category="technology">Technology</button>
+    <button class="filter" data-category="journey">My journey</button>
+  </div>
+  <div class="articles" id="articleGrid">
+    <article class="article" data-category="development">
+      <div class="article-cover cover1">API<span style="font-size:15px"> ↗</span></div>
+      <div class="article-body">
+        <span class="tag">DEVELOPMENT</span>
+        <h3>Understanding REST APIs from scratch</h3>
+        <p>Exploring HTTP methods, endpoints, request-response cycles, and how APIs connect applications.</p>
+        <div class="article-meta"><span>6 min read</span><span>Oct 01, 2026</span></div>
+      </div>
+    </article>
+    <article class="article" data-category="technology">
+      <div class="article-cover cover2">AI ✳</div>
+      <div class="article-body">
+        <span class="tag">TECHNOLOGY</span>
+        <h3>How AI is changing the way we build software</h3>
+        <p>A beginner's perspective on AI tools, automation, and the future of software development.</p>
+        <div class="article-meta"><span>7 min read</span><span>Sep 28, 2026</span></div>
+      </div>
+    </article>
+    <article class="article" data-category="journey">
+      <div class="article-cover cover3">01 — ∞</div>
+      <div class="article-body">
+        <span class="tag">MY JOURNEY</span>
+        <h3>Learning to code: progress over perfection</h3>
+        <p>What building a consistent learning habit taught me about patience, practice, and problem-solving.</p>
+        <div class="article-meta"><span>4 min read</span><span>Sep 24, 2026</span></div>
+      </div>
+    </article>
+    <article class="article" data-category="development">
+      <div class="article-cover cover4">{ }</div>
+      <div class="article-body">
+        <span class="tag">DEVELOPMENT</span>
+        <h3>My first steps with Python and FastAPI</h3>
+        <p>Setting up a backend, creating routes, and understanding how to structure a small web application.</p>
+        <div class="article-meta"><span>5 min read</span><span>Sep 20, 2026</span></div>
+      </div>
+    </article>
+    <article class="article" data-category="technology">
+      <div class="article-cover cover5">⌘</div>
+      <div class="article-body">
+        <span class="tag">TECHNOLOGY</span>
+        <h3>Git and GitHub: a developer's toolkit</h3>
+        <p>How version control helps me track changes, experiment safely, and share my work.</p>
+        <div class="article-meta"><span>5 min read</span><span>Sep 15, 2026</span></div>
+      </div>
+    </article>
+    <article class="article" data-category="journey">
+      <div class="article-cover cover6">BUILD.</div>
+      <div class="article-body">
+        <span class="tag">MY JOURNEY</span>
+        <h3>Turning a college project into a real product</h3>
+        <p>Lessons from planning features, making design decisions, and bringing a project to life.</p>
+        <div class="article-meta"><span>8 min read</span><span>Sep 10, 2026</span></div>
+      </div>
+    </article>
+  </div>
+  <p class="empty" id="empty">No articles in this category yet.</p>
+</section>
+
+<section class="container" id="about">
+  <div class="about">
+    <div class="avatar">Saurav.</div>
+    <div>
+      <div class="eyebrow">A little about me</div>
+      <h2>Curious mind.<br>Builder's mindset.</h2>
+      <p>Hey, I'm SR, a B.Tech student exploring the world of software development and data science. I enjoy learning by building, experimenting with new technologies, and turning ideas into working projects.</p>
+      <p>This blog is my public learning journal: a place to document what I discover, share useful insights, and connect with people who love technology.</p>
+      <div class="skills">
+        <span class="skill">Java</span><span class="skill">Python</span>
+        <span class="skill">FastAPI</span><span class="skill">HTML & CSS</span>
+        <span class="skill">JavaScript</span><span class="skill">Data Science</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container contact" id="contact">
+  <div class="eyebrow">Have an idea?</div>
+  <h2>Let's build something<br><span style="color:var(--accent)">meaningful.</span></h2>
+  <p>Have a project, opportunity, or interesting idea? I'd love to hear from you.</p>
+  <a href="mailto:srvrajput.2006@gmail.com"  class="btn btn-primary">Get in touch ↗</a>
+</section>
+</main>
+
+<footer class="container">
+  <span>© 2026 Saurav RAJPUT. Built with curiosity .</span>
+  <div class="socials">
+    <a href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    <a href="#home">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
+menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+const filters = document.querySelectorAll('.filter');
+const articles = document.querySelectorAll('.article');
+const empty = document.getElementById('empty');
+
+filters.forEach(filter => {
+  filter.addEventListener('click', () => {
+    filters.forEach(f => f.classList.remove('active'));
+    filter.classList.add('active');
+    const category = filter.dataset.category;
+    let visible = 0;
+    articles.forEach(article => {
+      const show = category === 'all' || article.dataset.category === category;
+      article.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    empty.style.display = visible ? 'none' : 'block';
+  });
+});
+</script>
+</body>
+</html>
